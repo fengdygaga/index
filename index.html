@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>模拟食堂打卡</title>
+    <script src="http://apps.bdimg.com/libs/jquery/1.8.0/jquery.js"></script>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    form {
+        position: relative;
+        width: 400px;
+        height: 100px;
+        margin: 200px auto 0;
+    }
+
+    .alow,
+    .if_need {
+        margin-top: 50px;
+    }
+
+    button {
+        position: absolute;
+        top: 0;
+        width: 100px;
+        height: 80px;
+    }
+
+    .fr {
+        right: 0;
+    }
+
+    .fl {
+        right: -200px;
+    }
+
+    .time {
+        position: absolute;
+        top: 150px;
+        right: 300px;
+    }
+    </style>
+</head>
+
+<body>
+    <form action="">
+        <div class="finger">
+            <input type="checkbox" class="finger" id="finger">
+            <label for="finger">录入指纹</label>
+        </div>
+        <div class="alow">
+            <input type="radio" class="dinner" id="dinner" name="one_choose">
+            <label for="dinner">允许晚上吃饭</label>
+        </div>
+        <div class="if_need">
+            <input type="radio" class="one" id="one" name="one_choose">
+            <label for="one">允许每天吃一顿饭</label>
+        </div>
+        <button type='button' class="fr" onclick="lunchtime()">吃午饭</button>
+        <button type='button' class="fl" onclick="dinnertime()">吃晚饭</button>
+    </form>
+    <div class="time"></div>
+</body>
+<script>
+var i = 0,
+    j = 0;
+var bool = true;
+
+$('.finger').change(function() {
+    if ($('.finger').is(':checked')) {
+        i = 1;
+        $('.dinner').change(function() {
+            if ($('.dinner').is(':checked')) {
+                j = 1;
+            }
+        });
+        $('.one').change(function() {
+            if ($('.one').is(':checked')) {
+                j = 1;
+            }
+        });
+    }
+});
+
+function lunchtime() {
+    if ($('.one').is(':checked')) {
+        if (i === 0) {
+            alert('指纹未录入，不能吃饭');
+        } else if (i === 1) {
+            alert('请吃午饭')
+            i++;
+            bool = !bool;
+        } else if (i > 1) {
+            alert('不能重复吃午饭')
+        }
+    } else {
+        if (i === 0) {
+            alert('指纹未录入，不能吃饭');
+        } else if (i === 1) {
+            alert('请吃午饭')
+            i++;
+        } else if (i > 1) {
+            alert('不能重复吃午饭')
+        }
+    };
+}
+
+
+function dinnertime() {
+    if (bool) {
+        if (i === 0) {
+            alert('指纹未录入，不能吃饭')
+        } else if (j === 0) {
+            alert('未开通晚饭权限，不能吃晚饭')
+        } else if (j === 1) {
+            alert('请吃晚饭');
+            j++;
+        } else if (j > 1) {
+            alert('不能重复吃晚饭')
+        }
+    } else {
+        alert('每天只能吃一顿饭')
+    }
+
+};
+
+function timeout() {
+    var d = new Date(),
+        year = d.getFullYear(),
+        mouth = checknum(d.getMonth() + 1),
+        day = checknum(d.getDate()),
+        hour = checknum(d.getHours()),
+        minutes = checknum(d.getMinutes()),
+        second = checknum(d.getSeconds());
+    var str = `${year}年${mouth}月${day}日${hour}:${minutes}:${second}秒`;
+    $('.time').text(str);
+};
+
+timeout();
+
+setInterval(timeout, 1000);
+
+function checknum(n) {
+    return n < 10 ? "0" + n : n;
+}
+</script>
+
+</html>
